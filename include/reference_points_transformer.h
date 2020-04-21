@@ -31,7 +31,6 @@ class ReferencePointsTransformer
     double CalculateEuclideanDistance(const double x1, const double x2, const double y1, const double y2);
     double CalculateSign(const double x1, const double x2, const double y1, const double y2);
 
-  private:
     static constexpr int min_num_reference_points{3};
     tk::spline spline_{};
     double start_x_{0.0};

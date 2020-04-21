@@ -46,6 +46,15 @@ cc_binary(
     deps = [":frenet_coordinate_lib"],
 )
 
+cc_binary(
+    name = "benchmark_calculate_frenet_coordinates",
+    srcs = ["benchmark/benchmark_calculate_frenet_coordinates.cpp"],
+    deps = [
+        ":frenet_coordinate_lib",
+        "@benchmark",
+    ],
+)
+
 cc_test(
     name = "frenet_coordinate_transformer_test",
     srcs = [

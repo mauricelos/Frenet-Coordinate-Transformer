@@ -10,7 +10,7 @@ In autonomous driving, the Frenet coordinate system is often used. In the Frenet
 
 ### Prerequisites for this tool:
 
-- Linux (e.g Ubuntu)
+- Linux, MacOs
 - [Bazel](https://bazel.build/)
 
 ### Used libraries
