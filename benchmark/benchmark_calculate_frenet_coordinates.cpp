@@ -23,6 +23,24 @@ static void BenchmarkCalculateFrenetCoordinatesLowerPrecision(benchmark::State& 
     }
 }
 
+static void BenchmarkCalculateFrenetCoordinatesMultiThread(benchmark::State& state)
+{
+    for (auto _ : state)
+    {
+        reference_points_transformer_.CalculateFrenetCoordinatesMultiThread(40.0, 5.0, 12);
+    }
+}
+
+static void BenchmarkCalculateFrenetCoordinatesMultiThreadLowerPrecision(benchmark::State& state)
+{
+    for (auto _ : state)
+    {
+        reference_points_transformer_.CalculateFrenetCoordinatesMultiThread(40.0, 5.0, 12, 0.01);
+    }
+}
+
 BENCHMARK(BenchmarkCalculateFrenetCoordinates);
 BENCHMARK(BenchmarkCalculateFrenetCoordinatesLowerPrecision);
+BENCHMARK(BenchmarkCalculateFrenetCoordinatesMultiThread);
+BENCHMARK(BenchmarkCalculateFrenetCoordinatesMultiThreadLowerPrecision);
 BENCHMARK_MAIN();

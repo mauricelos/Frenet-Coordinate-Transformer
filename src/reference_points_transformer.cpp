@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <future>
 #include <utility>
 #include <vector>
 
@@ -26,15 +27,17 @@ ReferencePointsTransformer::ReferencePointsTransformer(const ReferencePoints& re
 
 FrenetCoordinates ReferencePointsTransformer::CalculateFrenetCoordinates(const double coordinate_x,
                                                                          const double coordinate_y,
-                                                                         const double precision)
+                                                                         const double precision,
+                                                                         const double start_x,
+                                                                         const double end_x)
 {
     FrenetCoordinates frenet_coordinates{std::numeric_limits<double>::max(), std::numeric_limits<double>::max()};
 
     double current_s{0.0};
     double closest_x{std::numeric_limits<double>::max()};
-    double current_x{(end_x_ - start_x_) > 0.0 ? start_x_ : end_x_};
+    double current_x{(end_x - start_x) > 0.0 ? start_x : end_x};
 
-    while (current_x < ((end_x_ - start_x_) > 0.0 ? end_x_ : start_x_))
+    while (current_x < ((end_x - start_x) > 0.0 ? end_x : start_x))
     {
         double distance = CalculateEuclideanDistance(current_x, coordinate_x, spline_(current_x), coordinate_y);
 
@@ -51,6 +54,37 @@ FrenetCoordinates ReferencePointsTransformer::CalculateFrenetCoordinates(const d
     }
 
     frenet_coordinates.d *= CalculateSign(closest_x, coordinate_x, spline_(closest_x), coordinate_y);
+
+    return frenet_coordinates;
+}
+
+FrenetCoordinates ReferencePointsTransformer::CalculateFrenetCoordinatesMultiThread(const double coordinate_x,
+                                                                                    const double coordinate_y,
+                                                                                    const std::uint8_t num_threads,
+                                                                                    const double precision)
+{
+    FrenetCoordinates frenet_coordinates{0.0, std::numeric_limits<double>::max()};
+    std::vector<std::future<FrenetCoordinates>> futures{};
+    auto step_size{std::fabs(end_x_ - start_x_) / num_threads};
+
+    for (auto i = 0; i < num_threads; ++i)
+    {
+        futures.push_back(std::async(std::launch::async, &ReferencePointsTransformer::CalculateFrenetCoordinates, this,
+                    coordinate_x,
+                    coordinate_y,
+                    precision,
+                    start_x_ + (i * step_size), start_x_ + ((i + 1) * step_size)));
+    }
+
+    for (auto& future : futures)
+    {
+        auto frenet = future.get();
+        if (std::fabs(frenet.d) <= std::fabs(frenet_coordinates.d))
+        {
+            frenet_coordinates.s += frenet.s;
+            frenet_coordinates.d = frenet.d;
+        }
+    }
 
     return frenet_coordinates;
 }

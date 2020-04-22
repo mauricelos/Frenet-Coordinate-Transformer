@@ -56,6 +56,22 @@ TEST_F(ReferencePointsTransformerTest, CalculateFrenetCoordinatesTestRightFromSp
     EXPECT_NEAR(frenet_coordinates.s, 19.9991, threshold_);
 }
 
+TEST_F(ReferencePointsTransformerTest, CalculateFrenetCoordinatesMultiThreadTestLeftFromSpline)
+{
+    auto frenet_coordinates = reference_points_transformer_.CalculateFrenetCoordinatesMultiThread(20.0, 2.0, 12);
+
+    EXPECT_NEAR(frenet_coordinates.d, -1.9441, threshold_);
+    EXPECT_NEAR(frenet_coordinates.s, 19.9891, 0.01);
+}
+
+TEST_F(ReferencePointsTransformerTest, CalculateFrenetCoordinatesMultiThreadTestRightFromSpline)
+{
+    auto frenet_coordinates = reference_points_transformer_.CalculateFrenetCoordinatesMultiThread(20.0, 0.0, 12);
+
+    EXPECT_NEAR(frenet_coordinates.d, 0.0557, threshold_);
+    EXPECT_NEAR(frenet_coordinates.s, 19.9991, 0.01);
+}
+
 TEST_F(ReferencePointsTransformerTest, SetFrenetCalculationBoundariesTest)
 {
     reference_points_transformer_.SetFrenetCalculationBoundaries(-20.0, 100.0);

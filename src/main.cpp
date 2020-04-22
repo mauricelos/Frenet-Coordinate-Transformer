@@ -23,7 +23,7 @@ int main()
     ReferencePointsTransformer reference_points_transformer{reference_points};
 
     auto frenet_coordinates =
-        reference_points_transformer.CalculateFrenetCoordinates(user_x_coordinate, user_y_coordinate);
+        reference_points_transformer.CalculateFrenetCoordinatesMultiThread(user_x_coordinate, user_y_coordinate, 12);
 
     std::cout << "Frenet coordinates, d: " << frenet_coordinates.d << " s: " << frenet_coordinates.s << std::endl;
 
