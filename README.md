@@ -40,3 +40,4 @@ When running the binary the user will be prompted to enter coordinates to compar
 - ```CalculateEuclideanDistance``` -> Calculates the euclidean distance of two points
 - ```CalculateSign()``` -> Calculates the sign of the d-value for the frenet coordinate. E.g left or right side from the reference line.
 - ```CalculateFrenetCoordinates()``` -> Calculates the Frenet Coordinates based on the provided reference points and the user input coordinates
+- ```CalculateFrenetCoordinatesMultiThread()``` -> Calculates the Frenet Coordinates based on the provided reference points and the user input coordinates with multithreaded function calls to ```CalculateFrenetCoordinates()```. Number of threads to use can be defined by the user
