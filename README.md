@@ -23,6 +23,7 @@ In autonomous driving, the Frenet coordinate system is often used. In the Frenet
 
 - Run the binary: ```bazel run :frenet_coordinate_transformer```
 - Run the unit tests: ```bazel test :frenet_coordinate_transformer_test```
+- Run the benchmarks: ```bazel run :benchmark_calculate_frenet_coordinates```
 - Build entire code: ```bazel build :all```
 
 When running the binary the user will be prompted to enter coordinates to compare to the reference line created by the provided reference points ("reference_points.pb.txt"). It will look like this:
